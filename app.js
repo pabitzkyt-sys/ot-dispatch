@@ -137,7 +137,6 @@ function openMenu() {
 
   document.body.appendChild(overlay);
 }
-
 // ---------- CLOSE ----------
 function closeMenu() {
   const menu = document.getElementById("menuOverlay");
