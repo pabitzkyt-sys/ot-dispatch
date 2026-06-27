@@ -14,10 +14,41 @@ function load() {
 function save() {
   localStorage.setItem("otDispatch", JSON.stringify(data));
 }
+//----- DELETE PERSON-------
+function deletePerson(type, index) {
+
+  const list = type === "mechanic"
+    ? data.mechanics
+    : data.helpers;
+
+  const name = list[index];
+
+  if (!confirm(`Delete ${name} AND all their history?`)) return;
+
+  // remove from roster
+  list.splice(index, 1);
+
+  // remove all log entries for that person
+  data.log = data.log.filter(entry => entry.name !== name);
+
+  save();
+
+  renderRoster(type);
+  updateUI();
+}
 
 // ---------- INIT ----------
 function init() {
   load();
+  updateUI();
+}
+//----CLEAR HISTORY---
+function clearHistory() {
+  if (!confirm("Clear ALL history?")) return;
+
+  data.log = [];
+  save();
+
   updateUI();
 }
 
@@ -97,6 +128,7 @@ function openMenu() {
       <button onclick="openRosterEditor('mechanic')">👷 Mechanics</button>
       <button onclick="openRosterEditor('helper')">🧰 Helpers</button>
       <button onclick="showHistory()">📋 History</button>
+      <button onclick="clearHistory()">🧹 Clear History</button>
 
       <button onclick="closeMenu()" class="closeBtn">Close</button>
 
