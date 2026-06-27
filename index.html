@@ -6,7 +6,6 @@
   <title>OT Dispatch</title>
 
   <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
 </head>
 
 <body>
@@ -20,46 +19,65 @@
     </div>
 
     <!-- MECHANICS -->
-    <div class="buttons">
+    <div class="section">
 
-  <div class="btnWrap">
-    <button class="red" onclick="vote('mechanic', 'decline')">❌</button>
-    <div id="mechDecline" class="count">0</div>
-  </div>
+      <div class="label">MECHANICS</div>
 
-  <div class="btnWrap">
-    <button class="yellow" onclick="vote('mechanic', 'na')">❓</button>
-    <div id="mechNA" class="count">0</div>
-  </div>
+      <div id="mechanicName" class="name">Loading...</div>
 
-  <div class="btnWrap">
-    <button class="green" onclick="vote('mechanic', 'accept')">✅</button>
-    <div id="mechAccept" class="count">0</div>
-  </div>
+      <div class="buttons">
 
-</div>
+        <div class="btnWrap">
+          <button class="red" onclick="vote('mechanic','decline')">❌</button>
+          <div id="mechDecline" class="count">0</div>
+        </div>
+
+        <div class="btnWrap">
+          <button class="yellow" onclick="vote('mechanic','na')">❓</button>
+          <div id="mechNA" class="count">0</div>
+        </div>
+
+        <div class="btnWrap">
+          <button class="green" onclick="vote('mechanic','accept')">✅</button>
+          <div id="mechAccept" class="count">0</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="divider"></div>
 
     <!-- HELPERS -->
-    <div class="buttons">
+    <div class="section">
 
-  <div class="btnWrap">
-    <button class="red" onclick="vote('helper', 'decline')">❌</button>
-    <div id="helpDecline" class="count">0</div>
+      <div class="label">HELPERS</div>
+
+      <div id="helperName" class="name">Loading...</div>
+
+      <div class="buttons">
+
+        <div class="btnWrap">
+          <button class="red" onclick="vote('helper','decline')">❌</button>
+          <div id="helpDecline" class="count">0</div>
+        </div>
+
+        <div class="btnWrap">
+          <button class="yellow" onclick="vote('helper','na')">❓</button>
+          <div id="helpNA" class="count">0</div>
+        </div>
+
+        <div class="btnWrap">
+          <button class="green" onclick="vote('helper','accept')">✅</button>
+          <div id="helpAccept" class="count">0</div>
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
-
-  <div class="btnWrap">
-    <button class="yellow" onclick="vote('helper', 'na')">❓</button>
-    <div id="helpNA" class="count">0</div>
-  </div>
-
-  <div class="btnWrap">
-    <button class="green" onclick="vote('helper', 'accept')">✅</button>
-    <div id="helpAccept" class="count">0</div>
-  </div>
-
-</div>
 
   <script src="app.js"></script>
-
 </body>
 </html>
