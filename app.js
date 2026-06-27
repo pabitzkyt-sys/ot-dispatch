@@ -9,124 +9,7 @@ function load() {
   const saved = localStorage.getItem("otDispatch");
   if (saved) data = JSON.parse(saved);
 }
-//-------COUNT-------
-function count(name, action) {
-  return data.log.filter(x => x.name === name && x.action === action).length;
-}
 
-//-----DELETE PERSON-------
-function deletePerson(type, index) {
-
-  const list = type === "mechanic"
-    ? data.mechanics
-    : data.helpers;
-
-  list.splice(index, 1);
-
-  save();
-  renderRoster(type);
-}
-
-//------EDIT PERSON-----
-function editPerson(type, index) {
-
-  const list = type === "mechanic"
-    ? data.mechanics
-    : data.helpers;
-
-  const newName = prompt("Edit name:", list[index]);
-  if (!newName) return;
-
-  list[index] = newName.trim();
-
-  save();
-  renderRoster(type);
-}
-
-//-----ADD PERSON-------
-function addPerson(type) {
-
-  const name = prompt("Enter name:");
-  if (!name) return;
-
-  const list = type === "mechanic"
-    ? data.mechanics
-    : data.helpers;
-
-  list.push(name.trim());
-
-  save();
-  renderRoster(type);
-}
-
-//---------RENDER ROSTER-----
-function renderRoster(type) {
-
-  const list = type === "mechanic"
-    ? data.mechanics
-    : data.helpers;
-
-  const container = document.getElementById("rosterList");
-
-  container.innerHTML = list.map((name, index) => `
-    <div style="
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:10px;
-      background:#222;
-      border-radius:10px;
-      margin-top:8px;
-    ">
-
-      <span onclick="editPerson('${type}', ${index})" style="flex:1; text-align:left;">
-        ${name}
-      </span>
-
-      <button onclick="deletePerson('${type}', ${index})" style="background:red; color:white; border:none; padding:6px 10px; border-radius:8px;">
-        🗑️
-      </button>
-
-    </div>
-  `).join("");
-}
-//----------OPEN ROSTER---------
-function openRosterEditor(type) {
-
-  closeMenu();
-
-  const list = type === "mechanic"
-    ? data.mechanics
-    : data.helpers;
-
-  const overlay = document.createElement("div");
-  overlay.id = "menuOverlay";
-
-  overlay.innerHTML = `
-    <div class="menuPanel">
-
-      <div class="menuTitle">
-        ${type === "mechanic" ? "👷 Mechanics" : "🧰 Helpers"}
-      </div>
-
-      <button onclick="addPerson('${type}')">➕ Add Person</button>
-
-      <div id="rosterList"></div>
-
-      <button onclick="closeMenu()" class="closeBtn">Done</button>
-
-    </div>
-  `;
-
-  document.body.appendChild(overlay);
-
-  renderRoster(type);
-}
-//---------CLOSE MENU---------
-function closeMenu() {
-  const menu = document.getElementById("menuOverlay");
-  if (menu) menu.remove();
-}
 // ---------- SAVE ----------
 function save() {
   localStorage.setItem("otDispatch", JSON.stringify(data));
@@ -136,6 +19,11 @@ function save() {
 function init() {
   load();
   updateUI();
+}
+
+// ---------- COUNT ----------
+function count(name, action) {
+  return data.log.filter(x => x.name === name && x.action === action).length;
 }
 
 // ---------- UPDATE UI ----------
@@ -188,7 +76,7 @@ function addLog(type, name, action) {
   }
 }
 
-// ---------- BUTTONS ----------
+// ---------- VOTE ----------
 function vote(type, action) {
 
   const list = type === "mechanic"
@@ -205,7 +93,7 @@ function vote(type, action) {
   updateUI();
 }
 
-// ---------- SETTINGS ----------
+// ---------- MENU ----------
 function openMenu() {
 
   const old = document.getElementById("menuOverlay");
@@ -231,42 +119,117 @@ function openMenu() {
   document.body.appendChild(overlay);
 }
 
-// ---------- EDIT ----------
-function editNames(type){
+// ---------- CLOSE MENU ----------
+function closeMenu() {
+  const menu = document.getElementById("menuOverlay");
+  if (menu) menu.remove();
+}
 
-  const list = type==="mechanic"
-      ? data.mechanics
-      : data.helpers;
+// ---------- ROSTER EDITOR ----------
+function openRosterEditor(type) {
 
-  const names = prompt(
-`Edit ${type}s
+  closeMenu();
 
-Current names:
+  const overlay = document.createElement("div");
+  overlay.id = "menuOverlay";
 
-${list.join("\n")}
+  overlay.innerHTML = `
+    <div class="menuPanel">
 
-Enter the ENTIRE new list.
-One name per line.`);
+      <div class="menuTitle">
+        ${type === "mechanic" ? "👷 Mechanics" : "🧰 Helpers"}
+      </div>
 
-  if(names===null) return;
+      <button onclick="addPerson('${type}')">➕ Add Person</button>
 
-  const newList =
-      names
-      .split("\n")
-      .map(x=>x.trim())
-      .filter(x=>x.length);
+      <div id="rosterList"></div>
 
-  if(newList.length){
+      <button onclick="closeMenu()" class="closeBtn">Done</button>
 
-      if(type==="mechanic")
-          data.mechanics=newList;
-      else
-          data.helpers=newList;
+    </div>
+  `;
 
-      save();
-      updateUI();
-  }
+  document.body.appendChild(overlay);
 
+  renderRoster(type);
+}
+
+// ---------- ROSTER RENDER ----------
+function renderRoster(type) {
+
+  const list = type === "mechanic"
+    ? data.mechanics
+    : data.helpers;
+
+  const container = document.getElementById("rosterList");
+
+  container.innerHTML = list.map((name, index) => `
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:10px;
+      background:#222;
+      border-radius:10px;
+      margin-top:8px;
+    ">
+
+      <span onclick="editPerson('${type}', ${index})" style="flex:1; text-align:left;">
+        ${name}
+      </span>
+
+      <button onclick="deletePerson('${type}', ${index})"
+        style="background:red; color:white; border:none; padding:6px 10px; border-radius:8px;">
+        🗑️
+      </button>
+
+    </div>
+  `).join("");
+}
+
+// ---------- ADD PERSON ----------
+function addPerson(type) {
+
+  const name = prompt("Enter name:");
+  if (!name) return;
+
+  const list = type === "mechanic"
+    ? data.mechanics
+    : data.helpers;
+
+  list.push(name.trim());
+
+  save();
+  renderRoster(type);
+}
+
+// ---------- EDIT PERSON ----------
+function editPerson(type, index) {
+
+  const list = type === "mechanic"
+    ? data.mechanics
+    : data.helpers;
+
+  const newName = prompt("Edit name:", list[index]);
+  if (!newName) return;
+
+  list[index] = newName.trim();
+
+  save();
+  renderRoster(type);
+}
+
+// ---------- DELETE PERSON ----------
+function deletePerson(type, index) {
+
+  const list = type === "mechanic"
+    ? data.mechanics
+    : data.helpers;
+
+  list.splice(index, 1);
+
+  save();
+  renderRoster(type);
 }
 
 // ---------- HISTORY ----------
@@ -296,14 +259,14 @@ function showHistory() {
 
         return `
           <div style="background:#222; padding:10px; border-radius:10px; margin-top:10px;">
-            <div style="font-weight:bold; font-size:16px;">
+            <div style="font-weight:bold;">
               ${name}
             </div>
 
-            <div style="font-size:12px; opacity:0.8; margin-top:5px;">
-              Accepts: ${entries.filter(e=>e.action==="accept").length} |
-              Declines: ${entries.filter(e=>e.action==="decline").length} |
-              Unavailable: ${entries.filter(e=>e.action==="na").length}
+            <div style="font-size:12px; opacity:0.8;">
+              ✅ ${entries.filter(e=>e.action==="accept").length} |
+              ❌ ${entries.filter(e=>e.action==="decline").length} |
+              ❓ ${entries.filter(e=>e.action==="na").length}
             </div>
           </div>
         `;
@@ -320,4 +283,4 @@ function showHistory() {
 }
 
 init();
-console.log("version 2 loaded");
+console.log("OT Dispatch loaded");
