@@ -135,8 +135,24 @@ function init() {
 
 // ---------- UPDATE UI ----------
 function updateUI() {
-  document.getElementById("mechanicName").innerText = data.mechanics[0] || "None";
-  document.getElementById("helperName").innerText = data.helpers[0] || "None";
+
+  const mech = data.mechanics[0] || "None";
+  const help = data.helpers[0] || "None";
+
+  document.getElementById("mechanicName").innerText = mech;
+  document.getElementById("helperName").innerText = help;
+
+  // counts
+  document.getElementById("debug").innerHTML = `
+    <div>
+      <b>${mech}</b><br>
+      A:${count(mech,"accept")} D:${count(mech,"decline")} U:${count(mech,"na")}
+    </div>
+    <div style="margin-top:10px;">
+      <b>${help}</b><br>
+      A:${count(help,"accept")} D:${count(help,"decline")} U:${count(help,"na")}
+    </div>
+  `;
 }
 
 // ---------- ROTATE ----------
