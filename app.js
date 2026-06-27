@@ -68,32 +68,28 @@ function vote(type, action) {
 // ---------- SETTINGS ----------
 function openMenu() {
 
-  const choice = prompt(
-`OT Dispatch
+  // prevent duplicate menu
+  let existing = document.getElementById("menuOverlay");
+  if (existing) existing.remove();
 
-1 - Edit Mechanics
-2 - Edit Helpers
-3 - History
-4 - Cancel`);
+  const overlay = document.createElement("div");
+  overlay.id = "menuOverlay";
 
-  switch(choice){
+  overlay.innerHTML = `
+    <div class="menuBox">
 
-    case "1":
-      editNames("mechanic");
-      break;
+      <h2>⚙️ Settings</h2>
 
-    case "2":
-      editNames("helper");
-      break;
+      <button onclick="editNames('mechanic')">👷 Edit Mechanics</button>
+      <button onclick="editNames('helper')">🧰 Edit Helpers</button>
+      <button onclick="showHistory()">📋 History</button>
 
-    case "3":
-      showHistory();
-      break;
+      <button onclick="closeMenu()" style="background:#444;">Close</button>
 
-    default:
-      return;
-  }
+    </div>
+  `;
 
+  document.body.appendChild(overlay);
 }
 
 // ---------- EDIT ----------
