@@ -35,24 +35,11 @@ function updateUI() {
   document.getElementById("mechanicName").innerText = mech;
   document.getElementById("helperName").innerText = help;
 
-  const mechStats = document.getElementById("mechanicStats");
-  const helpStats = document.getElementById("helperStats");
+  document.getElementById("mechanicStats").innerText =
+    `❌ ${count(mech,"decline")}   ❓ ${count(mech,"na")}   ✅ ${count(mech,"accept")}`;
 
-  if (mechStats) {
-    mechStats.innerHTML = `
-      ✅ ${count(mech,"accept")} |
-      ❌ ${count(mech,"decline")} |
-      ❓ ${count(mech,"na")}
-    `;
-  }
-
-  if (helpStats) {
-    helpStats.innerHTML = `
-      ✅ ${count(help,"accept")} |
-      ❌ ${count(help,"decline")} |
-      ❓ ${count(help,"na")}
-    `;
-  }
+  document.getElementById("helperStats").innerText =
+    `❌ ${count(help,"decline")}   ❓ ${count(help,"na")}   ✅ ${count(help,"accept")}`;
 }
 
 // ---------- ROTATE ----------
