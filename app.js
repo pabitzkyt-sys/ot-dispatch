@@ -242,19 +242,53 @@ One name per line.`);
 }
 
 // ---------- HISTORY ----------
-function showHistory(){
+function showHistory() {
 
-  if(data.log.length===0){
-      alert("No history yet.");
-      return;
-  }
+  const old = document.getElementById("menuOverlay");
+  if (old) old.remove();
 
-  const text=data.log
-      .map(x=>`${x.time}\n${x.type}: ${x.name} (${x.action})`)
-      .join("\n\n");
+  const overlay = document.createElement("div");
+  overlay.id = "menuOverlay";
 
-  alert(text);
+  const grouped = {};
 
+  data.log.forEach(entry => {
+    if (!grouped[entry.name]) grouped[entry.name] = [];
+    grouped[entry.name].push(entry);
+  });
+
+  overlay.innerHTML = `
+    <div class="menuPanel" style="max-height:80vh; overflow:auto;">
+
+      <div class="menuTitle">📋 History</div>
+
+      ${Object.keys(grouped).map(name => {
+
+        const entries = grouped[name];
+
+        return `
+          <div style="background:#222; padding:10px; border-radius:10px; margin-top:10px;">
+            <div style="font-weight:bold; font-size:16px;">
+              ${name}
+            </div>
+
+            <div style="font-size:12px; opacity:0.8; margin-top:5px;">
+              Accepts: ${entries.filter(e=>e.action==="accept").length} |
+              Declines: ${entries.filter(e=>e.action==="decline").length} |
+              Unavailable: ${entries.filter(e=>e.action==="na").length}
+            </div>
+          </div>
+        `;
+      }).join("")}
+
+      <button onclick="closeMenu()" class="closeBtn" style="margin-top:15px;">
+        Close
+      </button>
+
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
 }
 
 init();
