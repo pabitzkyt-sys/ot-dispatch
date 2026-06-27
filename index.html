@@ -13,13 +13,17 @@
 
   <div class="app">
 
+    <!-- HEADER -->
     <div class="header">
       <div class="title">OT DISPATCH</div>
       <div class="gear" onclick="openMenu()">⚙️</div>
     </div>
 
+    <!-- MECHANICS -->
     <div class="section">
+
       <div class="label">MECHANICS</div>
+
       <div id="mechanicName" class="name">Loading...</div>
 
       <div class="buttons">
@@ -27,12 +31,18 @@
         <button class="yellow" onclick="vote('mechanic', 'na')">❓</button>
         <button class="green" onclick="vote('mechanic', 'accept')">✅</button>
       </div>
+
+      <div id="mechanicStats" class="stats"></div>
+
     </div>
 
     <div class="divider"></div>
 
+    <!-- HELPERS -->
     <div class="section">
+
       <div class="label">HELPERS</div>
+
       <div id="helperName" class="name">Loading...</div>
 
       <div class="buttons">
@@ -40,10 +50,14 @@
         <button class="yellow" onclick="vote('helper', 'na')">❓</button>
         <button class="green" onclick="vote('helper', 'accept')">✅</button>
       </div>
+
+      <div id="helperStats" class="stats"></div>
+
     </div>
 
   </div>
 
-<script src="app.js"></script>
- 
+  <script src="app.js"></script>
+
+</body>
 </html>
