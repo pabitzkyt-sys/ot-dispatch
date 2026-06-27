@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OT Dispatch</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+
+<body>
+
+  <div class="app">
+
+    <div class="header">
+      <div class="title">OT DISPATCH</div>
+      <div class="gear">⚙️</div>
+    </div>
+
+    <div class="section">
+      <div class="label">MECHANICS</div>
+      <div id="mechanicName" class="name">Loading...</div>
+
+      <div class="buttons">
+        <button class="red" onclick="vote('mechanic', 'decline')">❌</button>
+        <button class="yellow" onclick="vote('mechanic', 'na')">❓</button>
+        <button class="green" onclick="vote('mechanic', 'accept')">✅</button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="label">HELPERS</div>
+      <div id="helperName" class="name">Loading...</div>
+
+      <div class="buttons">
+        <button class="red" onclick="vote('helper', 'decline')">❌</button>
+        <button class="yellow" onclick="vote('helper', 'na')">❓</button>
+        <button class="green" onclick="vote('helper', 'accept')">✅</button>
+      </div>
+    </div>
+
+  </div>
+
+<script src="app.js"></script>
+</body>
+</html>
