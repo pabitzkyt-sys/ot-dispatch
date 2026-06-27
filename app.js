@@ -9,7 +9,39 @@ function load() {
   const saved = localStorage.getItem("otDispatch");
   if (saved) data = JSON.parse(saved);
 }
+//----------OPEN ROSTER---------
+function openRosterEditor(type) {
 
+  closeMenu();
+
+  const list = type === "mechanic"
+    ? data.mechanics
+    : data.helpers;
+
+  const overlay = document.createElement("div");
+  overlay.id = "menuOverlay";
+
+  overlay.innerHTML = `
+    <div class="menuPanel">
+
+      <div class="menuTitle">
+        ${type === "mechanic" ? "👷 Mechanics" : "🧰 Helpers"}
+      </div>
+
+      <button onclick="addPerson('${type}')">➕ Add Person</button>
+
+      <div id="rosterList"></div>
+
+      <button onclick="closeMenu()" class="closeBtn">Done</button>
+
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  renderRoster(type);
+}
+//---------CLOSE MENU---------
 function closeMenu() {
   const menu = document.getElementById("menuOverlay");
   if (menu) menu.remove();
