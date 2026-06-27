@@ -10,6 +10,10 @@ function load() {
   if (saved) data = JSON.parse(saved);
 }
 
+function closeMenu() {
+  const menu = document.getElementById("menuOverlay");
+  if (menu) menu.remove();
+}
 // ---------- SAVE ----------
 function save() {
   localStorage.setItem("otDispatch", JSON.stringify(data));
