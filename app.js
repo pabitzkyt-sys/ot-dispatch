@@ -142,15 +142,25 @@ function updateUI() {
   document.getElementById("mechanicName").innerText = mech;
   document.getElementById("helperName").innerText = help;
 
-  // counts
-  document.getElementById("debug").innerHTML = `
-    <div>
-      <b>${mech}</b><br>
-      A:${count(mech,"accept")} D:${count(mech,"decline")} U:${count(mech,"na")}
-    </div>
-    <div style="margin-top:10px;">
-      <b>${help}</b><br>
-      A:${count(help,"accept")} D:${count(help,"decline")} U:${count(help,"na")}
+  const debug = document.getElementById("debug");
+
+  if (!debug) return;
+
+  debug.innerHTML = `
+    <div style="padding:10px;">
+      <div style="margin-bottom:10px;">
+        <b>${mech}</b><br>
+        ✅ ${count(mech,"accept")} |
+        ❌ ${count(mech,"decline")} |
+        ❓ ${count(mech,"na")}
+      </div>
+
+      <div>
+        <b>${help}</b><br>
+        ✅ ${count(help,"accept")} |
+        ❌ ${count(help,"decline")} |
+        ❓ ${count(help,"na")}
+      </div>
     </div>
   `;
 }
