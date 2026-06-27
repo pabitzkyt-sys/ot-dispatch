@@ -70,45 +70,32 @@ function vote(type, action) {
 }
 
 // ---------- SETTINGS ----------
+
 function openMenu() {
 
-  console.log("MENU OPENED");
-
-  let old = document.getElementById("menuOverlay");
+  // remove old menu if it exists
+  const old = document.getElementById("menuOverlay");
   if (old) old.remove();
 
   const overlay = document.createElement("div");
   overlay.id = "menuOverlay";
 
   overlay.innerHTML = `
-    <div style="
-      position:fixed;
-      top:0;left:0;
-      width:100%;height:100%;
-      background:black;
-      color:white;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      gap:20px;
-      z-index:99999;
-    ">
+    <div class="menuPanel">
 
-      <h2>MENU TEST</h2>
+      <div class="menuTitle">⚙️ Settings</div>
 
-      <button onclick="alert('mechanic')">Edit Mechanics</button>
-      <button onclick="alert('helper')">Edit Helpers</button>
-      <button onclick="alert('history')">History</button>
-      <button onclick="closeMenu()">Close</button>
+      <button onclick="editNames('mechanic')">👷 Mechanics</button>
+      <button onclick="editNames('helper')">🧰 Helpers</button>
+      <button onclick="showHistory()">📋 History</button>
+
+      <button class="closeBtn" onclick="closeMenu()">Close</button>
 
     </div>
   `;
 
   document.body.appendChild(overlay);
 }
-
-
 // ---------- EDIT ----------
 function editNames(type){
 
