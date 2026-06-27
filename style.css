@@ -1,0 +1,61 @@
+body {
+  margin: 0;
+  font-family: -apple-system;
+  background: #000;
+  color: white;
+}
+
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  font-size: 18px;
+}
+
+.section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.label {
+  opacity: 0.6;
+  margin-bottom: 10px;
+}
+
+.name {
+  font-size: 42px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+}
+
+button {
+  font-size: 20px;
+  padding: 18px;
+  border-radius: 14px;
+  border: none;
+  min-width: 90px;
+}
+
+.red { background: #ff3b30; color: white; }
+.yellow { background: #ffcc00; color: black; }
+.green { background: #34c759; color: white; }
+
+.divider {
+  height: 1px;
+  background: #222;
+}
