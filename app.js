@@ -35,11 +35,15 @@ function updateUI() {
   document.getElementById("mechanicName").innerText = mech;
   document.getElementById("helperName").innerText = help;
 
-  document.getElementById("mechanicStats").innerText =
-    `❌ ${count(mech,"decline")}   ❓ ${count(mech,"na")}   ✅ ${count(mech,"accept")}`;
+  // mechanics
+  document.getElementById("mechDecline").innerText = count(mech,"decline");
+  document.getElementById("mechNA").innerText = count(mech,"na");
+  document.getElementById("mechAccept").innerText = count(mech,"accept");
 
-  document.getElementById("helperStats").innerText =
-    `❌ ${count(help,"decline")}   ❓ ${count(help,"na")}   ✅ ${count(help,"accept")}`;
+  // helpers
+  document.getElementById("helpDecline").innerText = count(help,"decline");
+  document.getElementById("helpNA").innerText = count(help,"na");
+  document.getElementById("helpAccept").innerText = count(help,"accept");
 }
 
 // ---------- ROTATE ----------
