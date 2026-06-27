@@ -9,6 +9,82 @@ function load() {
   const saved = localStorage.getItem("otDispatch");
   if (saved) data = JSON.parse(saved);
 }
+//-----DELETE PERSON-------
+function deletePerson(type, index) {
+
+  const list = type === "mechanic"
+    ? data.mechanics
+    : data.helpers;
+
+  list.splice(index, 1);
+
+  save();
+  renderRoster(type);
+}
+
+//------EDIT PERSON-----
+function editPerson(type, index) {
+
+  const list = type === "mechanic"
+    ? data.mechanics
+    : data.helpers;
+
+  const newName = prompt("Edit name:", list[index]);
+  if (!newName) return;
+
+  list[index] = newName.trim();
+
+  save();
+  renderRoster(type);
+}
+
+//-----ADD PERSON-------
+function addPerson(type) {
+
+  const name = prompt("Enter name:");
+  if (!name) return;
+
+  const list = type === "mechanic"
+    ? data.mechanics
+    : data.helpers;
+
+  list.push(name.trim());
+
+  save();
+  renderRoster(type);
+}
+
+//---------RENDER ROSTER-----
+function renderRoster(type) {
+
+  const list = type === "mechanic"
+    ? data.mechanics
+    : data.helpers;
+
+  const container = document.getElementById("rosterList");
+
+  container.innerHTML = list.map((name, index) => `
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:10px;
+      background:#222;
+      border-radius:10px;
+      margin-top:8px;
+    ">
+
+      <span onclick="editPerson('${type}', ${index})" style="flex:1; text-align:left;">
+        ${name}
+      </span>
+
+      <button onclick="deletePerson('${type}', ${index})" style="background:red; color:white; border:none; padding:6px 10px; border-radius:8px;">
+        🗑️
+      </button>
+
+    </div>
+  `).join("");
+}
 //----------OPEN ROSTER---------
 function openRosterEditor(type) {
 
