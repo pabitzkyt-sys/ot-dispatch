@@ -70,10 +70,8 @@ function vote(type, action) {
 }
 
 // ---------- SETTINGS ----------
-
 function openMenu() {
 
-  // remove old menu if it exists
   const old = document.getElementById("menuOverlay");
   if (old) old.remove();
 
@@ -85,17 +83,18 @@ function openMenu() {
 
       <div class="menuTitle">⚙️ Settings</div>
 
-      <button onclick="editNames('mechanic')">👷 Mechanics</button>
-      <button onclick="editNames('helper')">🧰 Helpers</button>
+      <button onclick="openRosterEditor('mechanic')">👷 Mechanics</button>
+      <button onclick="openRosterEditor('helper')">🧰 Helpers</button>
       <button onclick="showHistory()">📋 History</button>
 
-      <button class="closeBtn" onclick="closeMenu()">Close</button>
+      <button onclick="closeMenu()" class="closeBtn">Close</button>
 
     </div>
   `;
 
   document.body.appendChild(overlay);
 }
+
 // ---------- EDIT ----------
 function editNames(type){
 
