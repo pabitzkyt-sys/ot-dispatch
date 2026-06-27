@@ -139,8 +139,123 @@ function openMenu() {
 }
 // ---------- CLOSE ----------
 function closeMenu() {
-  const menu = document.getElementById("menuOverlay");
-  if (menu) menu.remove();
+  const el = document.getElementById("menuOverlay");
+  if (el) el.remove();
+}
+
+// ---------- ROSTER EDITOR ----------
+function openRosterEditor(type) {
+
+  closeMenu();
+
+  const list = type === "mechanic"
+    ? data.mechanics
+    : data.helpers;
+
+  const overlay = document.createElement("div");
+  overlay.id = "menuOverlay";
+
+  overlay.innerHTML = `
+    <div class="menuPanel">
+
+      <div class="menuTitle">
+        ${type === "mechanic" ? "👷 Mechanics" : "🧰 Helpers"}
+      </div>
+
+      <button onclick="addPerson('${type}')">➕ Add Person</button>
+
+      <div id="rosterList"></div>
+
+      <button onclick="closeMenu()" class="closeBtn">Done</button>
+
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  renderRoster(type);
+}
+
+// ---------- ROSTER RENDER ----------
+function renderRoster(type) {
+
+  const list = type === "mechanic"
+    ? data.mechanics
+    : data.helpers;
+
+  const container = document.getElementById("rosterList");
+
+  if (!container) return;
+
+  container.innerHTML = list.map((name, index) => `
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:10px;
+      background:#222;
+      border-radius:10px;
+      margin-top:8px;
+    ">
+
+      <span onclick="editPerson('${type}', ${index})" style="flex:1;">
+        ${name}
+      </span>
+
+      <button onclick="deletePerson('${type}', ${index})"
+        style="background:red; color:white; border:none; padding:6px 10px; border-radius:8px;">
+        🗑️
+      </button>
+
+    </div>
+  `).join("");
+}
+
+// ---------- HISTORY ----------
+function showHistory() {
+
+  closeMenu();
+
+  const overlay = document.createElement("div");
+  overlay.id = "menuOverlay";
+
+  const grouped = {};
+
+  data.log.forEach(entry => {
+    if (!grouped[entry.name]) grouped[entry.name] = [];
+    grouped[entry.name].push(entry);
+  });
+
+  overlay.innerHTML = `
+    <div class="menuPanel" style="max-height:80vh; overflow:auto;">
+
+      <div class="menuTitle">📋 History</div>
+
+      ${Object.keys(grouped).map(name => {
+
+        const entries = grouped[name];
+
+        return `
+          <div style="background:#222; padding:10px; border-radius:10px; margin-top:10px;">
+            <div style="font-weight:bold;">${name}</div>
+
+            <div style="font-size:12px; opacity:0.8;">
+              ✅ ${entries.filter(e=>e.action==="accept").length} |
+              ❌ ${entries.filter(e=>e.action==="decline").length} |
+              ❓ ${entries.filter(e=>e.action==="na").length}
+            </div>
+          </div>
+        `;
+      }).join("")}
+
+      <button onclick="closeMenu()" class="closeBtn" style="margin-top:15px;">
+        Close
+      </button>
+
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
 }
 
 // ---------- INIT ----------
