@@ -9,6 +9,11 @@ function load() {
   const saved = localStorage.getItem("otDispatch");
   if (saved) data = JSON.parse(saved);
 }
+//-------COUNT-------
+function count(name, action) {
+  return data.log.filter(x => x.name === name && x.action === action).length;
+}
+
 //-----DELETE PERSON-------
 function deletePerson(type, index) {
 
