@@ -151,3 +151,4 @@ function showHistory(){
 }
 
 init();
+console.log("version 2 loaded");
