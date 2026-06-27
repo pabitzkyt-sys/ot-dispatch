@@ -147,27 +147,24 @@ function updateUI() {
   document.getElementById("mechanicName").innerText = mech;
   document.getElementById("helperName").innerText = help;
 
-  const debug = document.getElementById("debug");
+  const mechStats = document.getElementById("mechanicStats");
+  const helpStats = document.getElementById("helperStats");
 
-  if (!debug) return;
+  if (mechStats) {
+    mechStats.innerHTML = `
+      ✅ ${count(mech,"accept")} |
+      ❌ ${count(mech,"decline")} |
+      ❓ ${count(mech,"na")}
+    `;
+  }
 
-  debug.innerHTML = `
-    <div style="padding:10px;">
-      <div style="margin-bottom:10px;">
-        <b>${mech}</b><br>
-        ✅ ${count(mech,"accept")} |
-        ❌ ${count(mech,"decline")} |
-        ❓ ${count(mech,"na")}
-      </div>
-
-      <div>
-        <b>${help}</b><br>
-        ✅ ${count(help,"accept")} |
-        ❌ ${count(help,"decline")} |
-        ❓ ${count(help,"na")}
-      </div>
-    </div>
-  `;
+  if (helpStats) {
+    helpStats.innerHTML = `
+      ✅ ${count(help,"accept")} |
+      ❌ ${count(help,"decline")} |
+      ❓ ${count(help,"na")}
+    `;
+  }
 }
 
 // ---------- ROTATE ----------
