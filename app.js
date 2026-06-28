@@ -274,6 +274,17 @@ function deletePerson(name) {
   renderRoster("helper");
 }
 
+function clearHistory() {
+  if (!confirm("Clear ALL history?")) return;
+
+  state.history = [];
+
+  save();
+  updateCounts();
+
+  alert("History cleared");
+}
+
 // =========================
 // BOOT SAFETY
 // =========================
