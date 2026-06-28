@@ -370,6 +370,24 @@ function deletePerson(name) {
   renderRoster("helper");
 }
 
+function clearHistory() {
+  if (!confirm("Clear ALL history?")) return;
+
+  state.history = [];
+
+  save();
+  updateCounts();
+
+  // If history screen is open, refresh it
+  if (state.currentScreen === "history") {
+    renderHistory();
+  }
+
+  if (state.currentScreen === "personHistory") {
+    showScreen("history");
+  }
+}
+
 // =========================
 // STARTUP LOG
 // =========================
