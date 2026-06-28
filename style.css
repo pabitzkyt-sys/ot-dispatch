@@ -1,40 +1,390 @@
-#menuOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.92);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
+/* ===========================
+   RESET
+=========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-.menuPanel {
-  width: 92%;
-  max-width: 420px;
-  background: #222;
-  padding: 20px;
-  border-radius: 16px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    background:#101010;
+    color:white;
 }
 
-.menuTitle {
-  font-size: 22px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 10px;
+/* ===========================
+   APP
+=========================== */
+
+#app{
+    width:100%;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
 }
 
-/* 🔥 THIS IS THE IMPORTANT FIX */
-.menuPanel button {
-  width: 100% !important;
-  display: block;
-  font-size: 20px;
-  padding: 16px;
-  border-radius: 12px;
-  border: none;
-  text-align: center;
-  box-sizing: border-box;
+/* ===========================
+   SCREENS
+=========================== */
+
+.screen{
+    display:none;
+    flex:1;
+    overflow-y:auto;
+    padding:18px;
+}
+
+.activeScreen{
+    display:block;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+
+.topBar{
+    height:70px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 18px;
+    background:#1b1b1b;
+    border-bottom:1px solid #303030;
+}
+
+#appTitle{
+    font-size:30px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.iconButton{
+    width:52px;
+    height:52px;
+    border:none;
+    border-radius:14px;
+    background:#2f2f2f;
+    color:white;
+    font-size:28px;
+}
+
+/* ===========================
+   CARDS
+=========================== */
+
+.card{
+    background:#1d1d1d;
+    border-radius:20px;
+    padding:22px;
+    margin-bottom:22px;
+    box-shadow:0 6px 18px rgba(0,0,0,.35);
+}
+
+.cardHeader{
+    margin-bottom:10px;
+}
+
+.cardTitle{
+    font-size:18px;
+    opacity:.75;
+    letter-spacing:1px;
+}
+
+.personName{
+    font-size:34px;
+    font-weight:700;
+    text-align:center;
+    margin:18px 0 28px;
+}
+
+/* ===========================
+   BUTTON ROW
+=========================== */
+
+.buttonRow{
+    display:flex;
+    justify-content:space-evenly;
+    align-items:flex-start;
+}
+
+.buttonGroup{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    width:90px;
+}
+
+.dispatchButton{
+    width:78px;
+    height:78px;
+    border:none;
+    border-radius:18px;
+    font-size:38px;
+    transition:.15s;
+}
+
+.dispatchButton:active{
+    transform:scale(.93);
+}
+
+/* ===========================
+   COLORS
+=========================== */
+
+.accept{
+    background:#1faa59;
+}
+
+.decline{
+    background:#d64045;
+}
+
+.unavailable{
+    background:#e0a800;
+}
+
+/* ===========================
+   COUNTS
+=========================== */
+
+.buttonCount{
+    margin-top:10px;
+    font-size:24px;
+    font-weight:700;
+    opacity:.85;
+}
+
+/* ===========================
+   SUB HEADER
+=========================== */
+
+.subHeader{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:20px;
+}
+
+.subHeader h2{
+    font-size:30px;
+}
+
+.backButton{
+    width:52px;
+    height:52px;
+    border:none;
+    border-radius:14px;
+    background:#2f2f2f;
+    color:white;
+    font-size:26px;
+}
+/* ===========================
+   SETTINGS
+=========================== */
+
+.settingsSection{
+    background:#1d1d1d;
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:20px;
+}
+
+.settingsSection h3{
+    font-size:18px;
+    margin-bottom:14px;
+    opacity:.8;
+}
+
+.menuButton{
+    width:100%;
+    border:none;
+    border-radius:14px;
+    padding:18px;
+    margin-top:10px;
+    background:#2d2d2d;
+    color:white;
+    font-size:20px;
+    font-weight:600;
+    text-align:left;
+    transition:.15s;
+}
+
+.menuButton:active{
+    transform:scale(.98);
+}
+
+.menuButton.danger{
+    background:#b3261e;
+}
+
+/* ===========================
+   HISTORY
+=========================== */
+
+#historyList,
+#personHistoryList{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+.historyCard{
+    background:#1d1d1d;
+    border-radius:18px;
+    padding:18px;
+    cursor:pointer;
+}
+
+.historyName{
+    font-size:24px;
+    font-weight:700;
+}
+
+.historyTotals{
+    margin-top:8px;
+    font-size:17px;
+    opacity:.8;
+}
+
+.historyEntry{
+    background:#1d1d1d;
+    border-radius:16px;
+    padding:16px;
+}
+
+.historyDate{
+    font-size:15px;
+    opacity:.7;
+    margin-bottom:6px;
+}
+
+.historyAction{
+    font-size:20px;
+    font-weight:600;
+}
+
+/* ===========================
+   ROSTER
+=========================== */
+
+.rosterRow{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    background:#2a2a2a;
+    border-radius:14px;
+    padding:14px;
+    margin-bottom:10px;
+}
+
+.rosterName{
+    flex:1;
+    font-size:20px;
+    font-weight:600;
+}
+
+.smallButton{
+    width:46px;
+    height:46px;
+    border:none;
+    border-radius:12px;
+    font-size:22px;
+    background:#3a3a3a;
+    color:white;
+}
+
+.deleteButton{
+    background:#b3261e;
+}
+
+/* ===========================
+   INPUTS
+=========================== */
+
+.textInput{
+    width:100%;
+    padding:16px;
+    margin-top:10px;
+    margin-bottom:14px;
+    border:none;
+    border-radius:12px;
+    background:#2b2b2b;
+    color:white;
+    font-size:18px;
+}
+
+.textInput:focus{
+    outline:2px solid #4a90e2;
+}
+
+/* ===========================
+   SCROLLBAR
+=========================== */
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#444;
+    border-radius:20px;
+}
+
+/* ===========================
+   ANIMATIONS
+=========================== */
+
+.screen{
+    animation:fadeIn .18s ease;
+}
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+/* ===========================
+   PHONE POLISH
+=========================== */
+
+@media (max-width:600px){
+
+    #appTitle{
+        font-size:26px;
+    }
+
+    .personName{
+        font-size:30px;
+    }
+
+    .dispatchButton{
+        width:74px;
+        height:74px;
+        font-size:34px;
+    }
+
+    .buttonCount{
+        font-size:22px;
+    }
+
+    .menuButton{
+        font-size:18px;
+    }
+
 }
