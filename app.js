@@ -1,4 +1,8 @@
 
+// =========================
+// STATE
+// =========================
+
 const state = {
   title: "OT Dispatch",
   mechanics: ["John Smith", "Dave Brown", "Alex Carter"],
@@ -17,7 +21,9 @@ function save() {
 
 function load() {
   const saved = localStorage.getItem("otDispatch_v3");
-  if (saved) Object.assign(state, JSON.parse(saved));
+  if (saved) {
+    Object.assign(state, JSON.parse(saved));
+  }
 }
 
 // =========================
@@ -31,7 +37,6 @@ window.onload = function () {
 
   updateUI();
   updateCounts();
-
   renderRoster("mechanic");
   renderRoster("helper");
 };
@@ -41,6 +46,8 @@ window.onload = function () {
 // =========================
 
 function showScreen(screen) {
+
+  state.currentScreen = screen;
 
   document.querySelectorAll(".screen").forEach(s => {
     s.classList.remove("activeScreen");
@@ -56,7 +63,15 @@ function showScreen(screen) {
     renderRoster("helper");
   }
 
-  state.currentScreen = screen;
+  if (screen === "history") {
+    document.getElementById("historyScreen").classList.add("activeScreen");
+    renderHistory();
+  }
+
+  if (screen === "personHistory") {
+    document.getElementById("personHistoryScreen").classList.add("activeScreen");
+  }
+
   save();
 }
 
@@ -65,20 +80,21 @@ function showScreen(screen) {
 // =========================
 
 function editTitle() {
-  const newTitle = prompt("Edit title:", state.title);
-  if (!newTitle) return;
+  const name = prompt("Edit title:", state.title);
+  if (!name) return;
 
-  state.title = newTitle.trim();
+  state.title = name.trim();
   document.getElementById("appTitle").innerText = state.title;
 
   save();
 }
 
 // =========================
-// MAIN DISPLAY
+// MAIN UI
 // =========================
 
 function updateUI() {
+
   document.getElementById("mechanicName").innerText =
     state.mechanics[0] || "None";
 
@@ -97,7 +113,7 @@ function rotate(list) {
 }
 
 // =========================
-// VOTING
+// VOTING + HISTORY LOG
 // =========================
 
 function vote(type, action) {
@@ -115,7 +131,9 @@ function vote(type, action) {
     time: new Date().toLocaleString()
   });
 
-  if (state.history.length > 500) state.history.pop();
+  if (state.history.length > 500) {
+    state.history.pop();
+  }
 
   rotate(list);
 
@@ -125,12 +143,12 @@ function vote(type, action) {
 }
 
 // =========================
-// COUNTS
+// COUNTS UNDER BUTTONS
 // =========================
 
 function count(name, action) {
-  return state.history.filter(
-    h => h.name === name && h.action === action
+  return state.history.filter(h =>
+    h.name === name && h.action === action
   ).length;
 }
 
@@ -149,6 +167,86 @@ function updateCounts() {
 }
 
 // =========================
+// HISTORY RENDER (FIXED)
+// =========================
+
+function renderHistory() {
+
+  const container = document.getElementById("historyList");
+  container.innerHTML = "";
+
+  if (!state.history.length) {
+    container.innerHTML = "<p style='opacity:0.6'>No history yet</p>";
+    return;
+  }
+
+  const grouped = {};
+
+  state.history.forEach(entry => {
+    if (!grouped[entry.name]) grouped[entry.name] = [];
+    grouped[entry.name].push(entry);
+  });
+
+  Object.keys(grouped).forEach(name => {
+
+    const entries = grouped[name];
+
+    const accept = entries.filter(e => e.action === "accept").length;
+    const decline = entries.filter(e => e.action === "decline").length;
+    const na = entries.filter(e => e.action === "na").length;
+
+    const card = document.createElement("div");
+    card.className = "historyCard";
+
+    card.innerHTML = `
+      <div class="historyName">${name}</div>
+      <div class="historyTotals">
+        ✔ ${accept} | ✖ ${decline} | ? ${na}
+      </div>
+    `;
+
+    card.onclick = () => openPersonHistory(name);
+
+    container.appendChild(card);
+  });
+}
+
+// =========================
+// PERSON HISTORY
+// =========================
+
+function openPersonHistory(name) {
+
+  showScreen("personHistory");
+
+  document.getElementById("historyPersonName").innerText = name;
+
+  const container = document.getElementById("personHistoryList");
+  container.innerHTML = "";
+
+  const entries = state.history
+    .filter(h => h.name === name)
+    .sort((a, b) => new Date(b.time) - new Date(a.time));
+
+  entries.forEach(entry => {
+
+    let icon = "❓";
+    if (entry.action === "accept") icon = "✔️";
+    if (entry.action === "decline") icon = "✖️";
+
+    const div = document.createElement("div");
+    div.className = "historyEntry";
+
+    div.innerHTML = `
+      <div class="historyDate">${entry.time}</div>
+      <div class="historyAction">${icon} ${entry.action}</div>
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+// =========================
 // ROSTER RENDER (INLINE EDIT)
 // =========================
 
@@ -159,7 +257,6 @@ function renderRoster(type) {
     : state.helpers;
 
   const container = document.getElementById(type + "Roster");
-
   container.innerHTML = "";
 
   list.forEach((name, index) => {
@@ -171,22 +268,20 @@ function renderRoster(type) {
     nameEl.className = "rosterName";
     nameEl.innerText = name;
 
-    // INLINE EDIT
     nameEl.onclick = () => startEdit(type, index, nameEl);
 
-    const delBtn = document.createElement("button");
-    delBtn.className = "smallButton deleteButton";
-    delBtn.innerText = "🗑";
+    const del = document.createElement("button");
+    del.className = "smallButton deleteButton";
+    del.innerText = "🗑";
 
-    delBtn.onclick = () => deletePerson(name);
+    del.onclick = () => deletePerson(name);
 
     row.appendChild(nameEl);
-    row.appendChild(delBtn);
+    row.appendChild(del);
 
     container.appendChild(row);
   });
 
-  // ADD BUTTON
   const addBtn = document.createElement("button");
   addBtn.className = "menuButton";
   addBtn.innerText = "+ Add " + (type === "mechanic" ? "Mechanic" : "Helper");
@@ -255,7 +350,7 @@ function addPerson(type) {
 }
 
 // =========================
-// DELETE PERSON + CLEAN HISTORY
+// DELETE PERSON (CLEAN HISTORY)
 // =========================
 
 function deletePerson(name) {
@@ -267,6 +362,7 @@ function deletePerson(name) {
   state.history = state.history.filter(h => h.name !== name);
 
   save();
+
   updateUI();
   updateCounts();
 
@@ -274,127 +370,8 @@ function deletePerson(name) {
   renderRoster("helper");
 }
 
-function clearHistory() {
-  if (!confirm("Clear ALL history?")) return;
-
-  state.history = [];
-
-  save();
-  updateCounts();
-
-  alert("History cleared");
-}
-
-
-
 // =========================
-// HISTORY SCREEN RENDER
+// STARTUP LOG
 // =========================
 
-function renderHistory() {
-
-  const container = document.getElementById("historyList");
-  container.innerHTML = "";
-
-  const grouped = {};
-
-  state.history.forEach(entry => {
-    if (!grouped[entry.name]) grouped[entry.name] = [];
-    grouped[entry.name].push(entry);
-  });
-
-  Object.keys(grouped).forEach(name => {
-
-    const entries = grouped[name];
-
-    const card = document.createElement("div");
-    card.className = "historyCard";
-
-    const accept = entries.filter(e => e.action === "accept").length;
-    const decline = entries.filter(e => e.action === "decline").length;
-    const na = entries.filter(e => e.action === "na").length;
-
-    card.innerHTML = `
-      <div class="historyName">${name}</div>
-      <div class="historyTotals">
-        ✔ ${accept} | ✖ ${decline} | ? ${na}
-      </div>
-    `;
-
-    card.onclick = () => openPersonHistory(name);
-
-    container.appendChild(card);
-  });
-}
-
-// =========================
-// PERSON DETAIL VIEW
-// =========================
-
-function openPersonHistory(name) {
-
-  showScreen("personHistory");
-
-  document.getElementById("historyPersonName").innerText = name;
-
-  const container = document.getElementById("personHistoryList");
-  container.innerHTML = "";
-
-  const entries = state.history
-    .filter(h => h.name === name)
-    .sort((a, b) => new Date(b.time) - new Date(a.time));
-
-  entries.forEach(entry => {
-
-    const div = document.createElement("div");
-    div.className = "historyEntry";
-
-    let icon = "❓";
-    if (entry.action === "accept") icon = "✔️";
-    if (entry.action === "decline") icon = "✖️";
-
-    div.innerHTML = `
-      <div class="historyDate">${entry.time}</div>
-      <div class="historyAction">${icon} ${entry.action.toUpperCase()}</div>
-    `;
-
-    container.appendChild(div);
-  });
-}
-
-// =========================
-// FIX SCREEN SWITCH HOOK
-// =========================
-
-function showScreen(screen) {
-
-  document.querySelectorAll(".screen").forEach(s => {
-    s.classList.remove("activeScreen");
-  });
-
-  if (screen === "dispatch") {
-    document.getElementById("dispatchScreen").classList.add("activeScreen");
-  }
-
-  if (screen === "settings") {
-    document.getElementById("settingsScreen").classList.add("activeScreen");
-  }
-
-  if (screen === "history") {
-    document.getElementById("historyScreen").classList.add("activeScreen");
-    renderHistory();
-  }
-
-  if (screen === "personHistory") {
-    document.getElementById("personHistoryScreen").classList.add("activeScreen");
-  }
-
-  state.currentScreen = screen;
-  save();
-}
-
-// =========================
-// BOOT SAFETY
-// =========================
-
-console.log("OT Dispatch v3 loaded");
+console.log("OT Dispatch v3 fully loaded");
