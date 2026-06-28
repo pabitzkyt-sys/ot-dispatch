@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>OT Dispatch</title>
 
 <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
@@ -24,7 +22,6 @@
   <!-- MAIN SCREEN -->
   <div id="dispatchScreen" class="screen activeScreen">
 
-    <!-- MECHANICS -->
     <div class="card">
       <div class="cardTitle">👷 Mechanics</div>
 
@@ -50,7 +47,6 @@
       </div>
     </div>
 
-    <!-- HELPERS -->
     <div class="card">
       <div class="cardTitle">🧰 Helpers</div>
 
@@ -77,8 +73,11 @@
     </div>
 
   </div>
+  
+  <!-- ========================= -->
+  <!-- SETTINGS SCREEN -->
+  <!-- ========================= -->
 
-  <!-- SETTINGS -->
   <div id="settingsScreen" class="screen">
 
     <div class="subHeader">
@@ -86,47 +85,65 @@
       <h2>Settings</h2>
     </div>
 
-    <button class="menuButton" onclick="showScreen('history')">
-  📋 View History
-</button>
-
-    <button class="menuButton danger" onclick="clearHistory()">
-  🧹 Clear History
-</button>
-
     <div class="settingsSection">
+
       <h3>Mechanics</h3>
       <div id="mechanicRoster"></div>
+
     </div>
 
     <div class="settingsSection">
+
       <h3>Helpers</h3>
       <div id="helperRoster"></div>
+
+    </div>
+
+    <div class="settingsSection">
+
+      <h3>History</h3>
+
+      <button class="menuButton" onclick="showScreen('history')">
+        📋 View History
+      </button>
+
+      <button class="menuButton danger" onclick="clearHistory()">
+        🧹 Clear History
+      </button>
+
     </div>
 
   </div>
 
-</div>
+  <!-- ========================= -->
+  <!-- HISTORY SCREEN -->
+  <!-- ========================= -->
 
   <div id="historyScreen" class="screen">
 
-  <div class="subHeader">
-    <button class="backButton" onclick="showScreen('settings')">←</button>
-    <h2>History</h2>
+    <div class="subHeader">
+      <button class="backButton" onclick="showScreen('settings')">←</button>
+      <h2>History</h2>
+    </div>
+
+    <div id="historyList"></div>
+
   </div>
 
-  <div id="historyList"></div>
-
-</div>
+  <!-- ========================= -->
+  <!-- PERSON HISTORY SCREEN -->
+  <!-- ========================= -->
 
   <div id="personHistoryScreen" class="screen">
 
-  <div class="subHeader">
-    <button class="backButton" onclick="showScreen('history')">←</button>
-    <h2 id="historyPersonName">Person</h2>
-  </div>
+    <div class="subHeader">
+      <button class="backButton" onclick="showScreen('history')">←</button>
+      <h2 id="historyPersonName">Person</h2>
+    </div>
 
-  <div id="personHistoryList"></div>
+    <div id="personHistoryList"></div>
+
+  </div>
 
 </div>
 
