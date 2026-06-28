@@ -1,34 +1,55 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: #111;
+  background: #0f0f0f;
   color: white;
 }
 
 .app {
-  padding: 20px;
+  padding: 18px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
+/* HEADER */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 10px 5px;
 }
 
 .title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
 }
 
+.gear {
+  font-size: 26px;
+  cursor: pointer;
+}
+
+/* SECTIONS */
 .section {
-  margin-top: 25px;
+  background: #1b1b1b;
+  padding: 18px;
+  border-radius: 16px;
+  margin-top: 16px;
+}
+
+.label {
+  font-size: 13px;
+  opacity: 0.7;
+  letter-spacing: 1px;
 }
 
 .name {
-  font-size: 22px;
-  margin: 10px 0;
+  font-size: 26px;
+  font-weight: bold;
+  margin: 10px 0 15px;
 }
 
+/* BUTTON ROW */
 .buttons {
   display: flex;
   justify-content: space-around;
@@ -36,32 +57,36 @@ body {
 }
 
 button {
-  font-size: 26px;
-  padding: 12px;
-  border-radius: 12px;
+  font-size: 30px;
+  padding: 14px;
+  border-radius: 14px;
   border: none;
+  width: 70px;
 }
 
-.red { background: #b33; color: white; }
-.yellow { background: #aa0; color: black; }
-.green { background: #3a3; color: white; }
+/* COLORS */
+.red { background: #c0392b; color: white; }
+.yellow { background: #f1c40f; color: black; }
+.green { background: #27ae60; color: white; }
 
+/* COUNTS UNDER BUTTONS */
 .btnWrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 
 .count {
-  font-size: 14px;
-  opacity: 0.8;
+  font-size: 16px;
+  opacity: 0.85;
 }
 
+/* DIVIDER */
 .divider {
-  height: 2px;
+  height: 1px;
   background: #333;
-  margin: 20px 0;
+  margin: 18px 0;
 }
 
 /* MENU */
@@ -77,9 +102,9 @@ button {
 
 .menuPanel {
   width: 90%;
-  max-width: 500px;
-  background: #1c1c1c;
-  padding: 25px;
+  max-width: 420px;
+  background: #222;
+  padding: 20px;
   border-radius: 16px;
   display: flex;
   flex-direction: column;
@@ -90,7 +115,6 @@ button {
   font-size: 22px;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 10px;
 }
 
 .menuPanel button {
@@ -99,4 +123,7 @@ button {
   border-radius: 12px;
 }
 
-
+.closeBtn {
+  background: #555;
+  color: white;
+}
