@@ -285,6 +285,114 @@ function clearHistory() {
   alert("History cleared");
 }
 
+
+
+// =========================
+// HISTORY SCREEN RENDER
+// =========================
+
+function renderHistory() {
+
+  const container = document.getElementById("historyList");
+  container.innerHTML = "";
+
+  const grouped = {};
+
+  state.history.forEach(entry => {
+    if (!grouped[entry.name]) grouped[entry.name] = [];
+    grouped[entry.name].push(entry);
+  });
+
+  Object.keys(grouped).forEach(name => {
+
+    const entries = grouped[name];
+
+    const card = document.createElement("div");
+    card.className = "historyCard";
+
+    const accept = entries.filter(e => e.action === "accept").length;
+    const decline = entries.filter(e => e.action === "decline").length;
+    const na = entries.filter(e => e.action === "na").length;
+
+    card.innerHTML = `
+      <div class="historyName">${name}</div>
+      <div class="historyTotals">
+        ✔ ${accept} | ✖ ${decline} | ? ${na}
+      </div>
+    `;
+
+    card.onclick = () => openPersonHistory(name);
+
+    container.appendChild(card);
+  });
+}
+
+// =========================
+// PERSON DETAIL VIEW
+// =========================
+
+function openPersonHistory(name) {
+
+  showScreen("personHistory");
+
+  document.getElementById("historyPersonName").innerText = name;
+
+  const container = document.getElementById("personHistoryList");
+  container.innerHTML = "";
+
+  const entries = state.history
+    .filter(h => h.name === name)
+    .sort((a, b) => new Date(b.time) - new Date(a.time));
+
+  entries.forEach(entry => {
+
+    const div = document.createElement("div");
+    div.className = "historyEntry";
+
+    let icon = "❓";
+    if (entry.action === "accept") icon = "✔️";
+    if (entry.action === "decline") icon = "✖️";
+
+    div.innerHTML = `
+      <div class="historyDate">${entry.time}</div>
+      <div class="historyAction">${icon} ${entry.action.toUpperCase()}</div>
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+// =========================
+// FIX SCREEN SWITCH HOOK
+// =========================
+
+function showScreen(screen) {
+
+  document.querySelectorAll(".screen").forEach(s => {
+    s.classList.remove("activeScreen");
+  });
+
+  if (screen === "dispatch") {
+    document.getElementById("dispatchScreen").classList.add("activeScreen");
+  }
+
+  if (screen === "settings") {
+    document.getElementById("settingsScreen").classList.add("activeScreen");
+  }
+
+  if (screen === "history") {
+    document.getElementById("historyScreen").classList.add("activeScreen");
+    renderHistory();
+  }
+
+  if (screen === "personHistory") {
+    document.getElementById("personHistoryScreen").classList.add("activeScreen");
+  }
+
+  state.currentScreen = screen;
+  save();
+}
+
 // =========================
 // BOOT SAFETY
 // =========================
