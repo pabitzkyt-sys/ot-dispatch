@@ -3,17 +3,11 @@
 <head>
 
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>OT Dispatch</title>
 
-<link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="style.css">
-
-<meta name="theme-color" content="#111111">
 
 </head>
 
@@ -21,392 +15,88 @@ content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable
 
 <div id="app">
 
-    <!-- ========================= -->
-    <!-- HEADER -->
-    <!-- ========================= -->
+  <!-- HEADER -->
+  <div class="topBar">
+    <h1 id="appTitle" onclick="editTitle()">OT Dispatch</h1>
+    <button class="iconButton" onclick="showScreen('settings')">⚙️</button>
+  </div>
 
-    <header class="topBar">
+  <!-- MAIN SCREEN -->
+  <div id="dispatchScreen" class="screen activeScreen">
 
-        <h1 id="appTitle"
-            onclick="editTitle()">
-            OT Dispatch
-        </h1>
+    <!-- MECHANICS -->
+    <div class="card">
+      <div class="cardTitle">👷 Mechanics</div>
 
-        <button
-            id="settingsButton"
-            class="iconButton"
-            onclick="showScreen('settings')">
+      <div id="mechanicName" class="personName">Loading...</div>
 
-            ⚙️
+      <div class="buttonRow">
 
-        </button>
-
-    </header>
-
-
-
-    <!-- ========================= -->
-    <!-- MAIN SCREEN -->
-    <!-- ========================= -->
-
-    <main
-        id="dispatchScreen"
-        class="screen activeScreen">
-
-
-
-
-        <!-- ========================= -->
-        <!-- MECHANICS -->
-        <!-- ========================= -->
-
-        <section class="card">
-
-            <div class="cardHeader">
-
-                <div class="cardTitle">
-
-                    👷 Mechanics
-
-                </div>
-
-            </div>
-
-            <div
-                id="mechanicName"
-                class="personName">
-
-                Loading...
-
-            </div>
-
-
-            <div class="buttonRow">
-
-                <div class="buttonGroup">
-
-                    <button
-                        class="dispatchButton decline"
-                        onclick="vote('mechanic','decline')">
-
-                        ❌
-
-                    </button>
-
-                    <div
-                        id="mechDeclineCount"
-                        class="buttonCount">
-
-                        0
-
-                    </div>
-
-                </div>
-
-
-                <div class="buttonGroup">
-
-                    <button
-                        class="dispatchButton unavailable"
-                        onclick="vote('mechanic','na')">
-
-                        ❓
-
-                    </button>
-
-                    <div
-                        id="mechNACount"
-                        class="buttonCount">
-
-                        0
-
-                    </div>
-
-                </div>
-
-
-                <div class="buttonGroup">
-
-                    <button
-                        class="dispatchButton accept"
-                        onclick="vote('mechanic','accept')">
-
-                        ✅
-
-                    </button>
-
-                    <div
-                        id="mechAcceptCount"
-                        class="buttonCount">
-
-                        0
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-
-
-
-        <!-- ========================= -->
-        <!-- HELPERS -->
-        <!-- ========================= -->
-
-        <section class="card">
-
-            <div class="cardHeader">
-
-                <div class="cardTitle">
-
-                    🧰 Helpers
-
-                </div>
-
-            </div>
-
-            <div
-                id="helperName"
-                class="personName">
-
-                Loading...
-
-            </div>
-
-
-            <div class="buttonRow">
-
-                <div class="buttonGroup">
-
-                    <button
-                        class="dispatchButton decline"
-                        onclick="vote('helper','decline')">
-
-                        ❌
-
-                    </button>
-
-                    <div
-                        id="helpDeclineCount"
-                        class="buttonCount">
-
-                        0
-
-                    </div>
-
-                </div>
-
-
-                <div class="buttonGroup">
-
-                    <button
-                        class="dispatchButton unavailable"
-                        onclick="vote('helper','na')">
-
-                        ❓
-
-                    </button>
-
-                    <div
-                        id="helpNACount"
-                        class="buttonCount">
-
-                        0
-
-                    </div>
-
-                </div>
-
-
-                <div class="buttonGroup">
-
-                    <button
-                        class="dispatchButton accept"
-                        onclick="vote('helper','accept')">
-
-                        ✅
-
-                    </button>
-
-                    <div
-                        id="helpAcceptCount"
-                        class="buttonCount">
-
-                        0
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-                <!-- ========================= -->
-        <!-- SETTINGS SCREEN -->
-        <!-- ========================= -->
-
-    </main>
-
-    <section
-        id="settingsScreen"
-        class="screen">
-
-        <header class="subHeader">
-
-            <button
-                class="backButton"
-                onclick="showScreen('dispatch')">
-
-                ←
-
-            </button>
-
-            <h2>Settings</h2>
-
-        </header>
-
-
-        <div class="settingsSection">
-
-            <h3>Application</h3>
-
-            <button
-                class="menuButton"
-                onclick="editTitle()">
-
-                ✏️ Rename Title
-
-            </button>
-
+        <div class="buttonGroup">
+          <button class="dispatchButton decline" onclick="vote('mechanic','decline')">❌</button>
+          <div id="mechDeclineCount" class="buttonCount">0</div>
         </div>
 
-
-
-        <div class="settingsSection">
-
-            <h3>Mechanics</h3>
-
-            <button
-                class="menuButton"
-                onclick="openRoster('mechanic')">
-
-                👷 Edit Mechanics
-
-            </button>
-
+        <div class="buttonGroup">
+          <button class="dispatchButton unavailable" onclick="vote('mechanic','na')">❓</button>
+          <div id="mechNACount" class="buttonCount">0</div>
         </div>
 
-
-
-        <div class="settingsSection">
-
-            <h3>Helpers</h3>
-
-            <button
-                class="menuButton"
-                onclick="openRoster('helper')">
-
-                🧰 Edit Helpers
-
-            </button>
-
+        <div class="buttonGroup">
+          <button class="dispatchButton accept" onclick="vote('mechanic','accept')">✅</button>
+          <div id="mechAcceptCount" class="buttonCount">0</div>
         </div>
 
+      </div>
+    </div>
 
+    <!-- HELPERS -->
+    <div class="card">
+      <div class="cardTitle">🧰 Helpers</div>
 
-        <div class="settingsSection">
+      <div id="helperName" class="personName">Loading...</div>
 
-            <h3>History</h3>
+      <div class="buttonRow">
 
-            <button
-                class="menuButton"
-                onclick="showHistoryScreen()">
-
-                📋 View History
-
-            </button>
-
-            <button
-                class="menuButton danger"
-                onclick="clearHistory()">
-
-                🧹 Clear History
-
-            </button>
-
+        <div class="buttonGroup">
+          <button class="dispatchButton decline" onclick="vote('helper','decline')">❌</button>
+          <div id="helpDeclineCount" class="buttonCount">0</div>
         </div>
 
-    </section>
-
-
-
-    <!-- ========================= -->
-    <!-- HISTORY SCREEN -->
-    <!-- ========================= -->
-
-    <section
-        id="historyScreen"
-        class="screen">
-
-        <header class="subHeader">
-
-            <button
-                class="backButton"
-                onclick="showScreen('settings')">
-
-                ←
-
-            </button>
-
-            <h2>History</h2>
-
-        </header>
-
-        <div id="historyList">
-
+        <div class="buttonGroup">
+          <button class="dispatchButton unavailable" onclick="vote('helper','na')">❓</button>
+          <div id="helpNACount" class="buttonCount">0</div>
         </div>
 
-    </section>
-
-
-
-    <!-- ========================= -->
-    <!-- PERSON HISTORY -->
-    <!-- ========================= -->
-
-    <section
-        id="personHistoryScreen"
-        class="screen">
-
-        <header class="subHeader">
-
-            <button
-                class="backButton"
-                onclick="showHistoryScreen()">
-
-                ←
-
-            </button>
-
-            <h2 id="historyPersonName">
-
-                Person
-
-            </h2>
-
-        </header>
-
-        <div
-            id="personHistoryList">
-
+        <div class="buttonGroup">
+          <button class="dispatchButton accept" onclick="vote('helper','accept')">✅</button>
+          <div id="helpAcceptCount" class="buttonCount">0</div>
         </div>
 
-    </section>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SETTINGS -->
+  <div id="settingsScreen" class="screen">
+
+    <div class="subHeader">
+      <button class="backButton" onclick="showScreen('dispatch')">←</button>
+      <h2>Settings</h2>
+    </div>
+
+    <div class="settingsSection">
+      <h3>Mechanics</h3>
+      <div id="mechanicRoster"></div>
+    </div>
+
+    <div class="settingsSection">
+      <h3>Helpers</h3>
+      <div id="helperRoster"></div>
+    </div>
+
+  </div>
 
 </div>
 
