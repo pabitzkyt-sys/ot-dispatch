@@ -1,3 +1,4 @@
+
 const state = {
   title: "OT Dispatch",
   mechanics: ["John Smith", "Dave Brown", "Alex Carter"],
@@ -7,7 +8,7 @@ const state = {
 };
 
 // =========================
-// LOAD / SAVE
+// STORAGE
 // =========================
 
 function save() {
@@ -16,11 +17,7 @@ function save() {
 
 function load() {
   const saved = localStorage.getItem("otDispatch_v3");
-  if (saved) {
-    const parsed = JSON.parse(saved);
-
-    Object.assign(state, parsed);
-  }
+  if (saved) Object.assign(state, JSON.parse(saved));
 }
 
 // =========================
@@ -34,14 +31,16 @@ window.onload = function () {
 
   updateUI();
   updateCounts();
+
+  renderRoster("mechanic");
+  renderRoster("helper");
 };
 
 // =========================
-// SCREEN NAVIGATION
+// SCREEN SWITCHING
 // =========================
 
 function showScreen(screen) {
-  state.currentScreen = screen;
 
   document.querySelectorAll(".screen").forEach(s => {
     s.classList.remove("activeScreen");
@@ -53,32 +52,30 @@ function showScreen(screen) {
 
   if (screen === "settings") {
     document.getElementById("settingsScreen").classList.add("activeScreen");
+    renderRoster("mechanic");
+    renderRoster("helper");
   }
 
-  if (screen === "history") {
-    document.getElementById("historyScreen").classList.add("activeScreen");
-    renderHistory();
-  }
-
+  state.currentScreen = screen;
   save();
 }
 
 // =========================
-// TITLE
+// TITLE EDIT
 // =========================
 
 function editTitle() {
-  const name = prompt("Edit title:", state.title);
-  if (!name) return;
+  const newTitle = prompt("Edit title:", state.title);
+  if (!newTitle) return;
 
-  state.title = name;
-  document.getElementById("appTitle").innerText = name;
+  state.title = newTitle.trim();
+  document.getElementById("appTitle").innerText = state.title;
 
   save();
 }
 
 // =========================
-// CORE DISPLAY
+// MAIN DISPLAY
 // =========================
 
 function updateUI() {
@@ -90,7 +87,7 @@ function updateUI() {
 }
 
 // =========================
-// ROTATION LOGIC
+// ROTATION
 // =========================
 
 function rotate(list) {
@@ -100,10 +97,11 @@ function rotate(list) {
 }
 
 // =========================
-// VOTE SYSTEM
+// VOTING
 // =========================
 
 function vote(type, action) {
+
   const list = type === "mechanic"
     ? state.mechanics
     : state.helpers;
@@ -111,15 +109,13 @@ function vote(type, action) {
   const name = list[0];
 
   state.history.unshift({
-    type,
     name,
+    type,
     action,
     time: new Date().toLocaleString()
   });
 
-  if (state.history.length > 500) {
-    state.history.pop();
-  }
+  if (state.history.length > 500) state.history.pop();
 
   rotate(list);
 
@@ -129,12 +125,12 @@ function vote(type, action) {
 }
 
 // =========================
-// COUNT SYSTEM (UNDER BUTTONS)
+// COUNTS
 // =========================
 
 function count(name, action) {
   return state.history.filter(
-    x => x.name === name && x.action === action
+    h => h.name === name && h.action === action
   ).length;
 }
 
@@ -143,181 +139,97 @@ function updateCounts() {
   const mech = state.mechanics[0] || "";
   const help = state.helpers[0] || "";
 
-  // Mechanics counts
   document.getElementById("mechAcceptCount").innerText = count(mech, "accept");
   document.getElementById("mechDeclineCount").innerText = count(mech, "decline");
   document.getElementById("mechNACount").innerText = count(mech, "na");
 
-  // Helpers counts
   document.getElementById("helpAcceptCount").innerText = count(help, "accept");
   document.getElementById("helpDeclineCount").innerText = count(help, "decline");
   document.getElementById("helpNACount").innerText = count(help, "na");
 }
 
 // =========================
-// HISTORY SCREEN
+// ROSTER RENDER (INLINE EDIT)
 // =========================
 
-function renderHistory() {
-
-  const container = document.getElementById("historyList");
-  container.innerHTML = "";
-
-  const grouped = groupHistory();
-
-  Object.keys(grouped).forEach(name => {
-
-    const entries = grouped[name];
-
-    const card = document.createElement("div");
-    card.className = "historyCard";
-
-    card.innerHTML = `
-      <div class="historyName">${name}</div>
-      <div class="historyTotals">
-        ✔ ${entries.filter(e => e.action === "accept").length} |
-        ✖ ${entries.filter(e => e.action === "decline").length} |
-        ? ${entries.filter(e => e.action === "na").length}
-      </div>
-    `;
-
-    card.onclick = () => openPersonHistory(name);
-
-    container.appendChild(card);
-  });
-}
-
-// =========================
-// PERSON HISTORY
-// =========================
-
-function openPersonHistory(name) {
-
-  showScreen("person");
-
-  document.getElementById("historyPersonName").innerText = name;
-
-  const container = document.getElementById("personHistoryList");
-  container.innerHTML = "";
-
-  state.history
-    .filter(h => h.name === name)
-    .forEach(entry => {
-
-      const div = document.createElement("div");
-      div.className = "historyEntry";
-
-      let icon = "❓";
-      if (entry.action === "accept") icon = "✔️";
-      if (entry.action === "decline") icon = "✖️";
-
-      div.innerHTML = `
-        <div class="historyDate">${entry.time}</div>
-        <div class="historyAction">${icon} ${entry.action.toUpperCase()}</div>
-      `;
-
-      container.appendChild(div);
-    });
-}
-
-// =========================
-// CLEAR HISTORY
-// =========================
-
-function clearHistory() {
-  if (!confirm("Clear ALL history?")) return;
-
-  state.history = [];
-  save();
-  updateCounts();
-
-  alert("History cleared");
-}
-
-// =========================
-// GROUP HISTORY
-// =========================
-
-function groupHistory() {
-
-  const grouped = {};
-
-  state.history.forEach(entry => {
-    if (!grouped[entry.name]) {
-      grouped[entry.name] = [];
-    }
-    grouped[entry.name].push(entry);
-  });
-
-  return grouped;
-}
-
-// =========================
-// SCREEN FIX HOOK
-// =========================
-
-// small safety fallback so navigation doesn't break
-function showHistoryScreen() {
-  showScreen("history");
-}
-
-// =========================
-// ROSTER EDITOR (MECHANICS / HELPERS)
-// =========================
-
-function openRoster(type) {
+function renderRoster(type) {
 
   const list = type === "mechanic"
     ? state.mechanics
     : state.helpers;
 
-  const name = prompt(
-`Edit ${type}s
+  const container = document.getElementById(type + "Roster");
 
-Current:
-${list.join("\n")}
+  container.innerHTML = "";
 
-Enter new list (one per line):`
-  );
+  list.forEach((name, index) => {
 
-  if (name === null) return;
+    const row = document.createElement("div");
+    row.className = "rosterRow";
 
-  const newList = name
-    .split("\n")
-    .map(x => x.trim())
-    .filter(x => x.length > 0);
+    const nameEl = document.createElement("div");
+    nameEl.className = "rosterName";
+    nameEl.innerText = name;
 
-  if (type === "mechanic") {
-    state.mechanics = newList;
-  } else {
-    state.helpers = newList;
-  }
+    // INLINE EDIT
+    nameEl.onclick = () => startEdit(type, index, nameEl);
 
-  save();
-  updateUI();
-  updateCounts();
+    const delBtn = document.createElement("button");
+    delBtn.className = "smallButton deleteButton";
+    delBtn.innerText = "🗑";
+
+    delBtn.onclick = () => deletePerson(name);
+
+    row.appendChild(nameEl);
+    row.appendChild(delBtn);
+
+    container.appendChild(row);
+  });
+
+  // ADD BUTTON
+  const addBtn = document.createElement("button");
+  addBtn.className = "menuButton";
+  addBtn.innerText = "+ Add " + (type === "mechanic" ? "Mechanic" : "Helper");
+
+  addBtn.onclick = () => addPerson(type);
+
+  container.appendChild(addBtn);
 }
 
 // =========================
-// DELETE PERSON (AND CLEAN HISTORY)
+// INLINE EDIT
 // =========================
 
-function deletePerson(name) {
+function startEdit(type, index, element) {
 
-  if (!confirm(`Delete ${name}? This will remove their history too.`)) return;
+  const input = document.createElement("input");
+  input.className = "textInput";
+  input.value = element.innerText;
 
-  state.history = state.history.filter(h => h.name !== name);
+  element.replaceWith(input);
+  input.focus();
 
-  state.mechanics = state.mechanics.filter(m => m !== name);
-  state.helpers = state.helpers.filter(h => h !== name);
+  function saveEdit() {
 
-  save();
-  updateUI();
-  updateCounts();
+    const value = input.value.trim();
 
-  if (state.currentScreen === "history") {
-    renderHistory();
+    if (value) {
+      if (type === "mechanic") {
+        state.mechanics[index] = value;
+      } else {
+        state.helpers[index] = value;
+      }
+    }
+
+    save();
+    updateUI();
+    renderRoster(type);
   }
+
+  input.addEventListener("blur", saveEdit);
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") input.blur();
+  });
 }
 
 // =========================
@@ -326,10 +238,11 @@ function deletePerson(name) {
 
 function addPerson(type) {
 
-  const name = prompt(`Add ${type}:`);
+  const name = prompt("Enter name:");
   if (!name) return;
 
   const clean = name.trim();
+  if (!clean) return;
 
   if (type === "mechanic") {
     state.mechanics.push(clean);
@@ -338,22 +251,31 @@ function addPerson(type) {
   }
 
   save();
-  updateUI();
+  renderRoster(type);
 }
 
 // =========================
-// SAFETY: AUTO REFRESH COUNTS AFTER ANY LOAD
+// DELETE PERSON + CLEAN HISTORY
 // =========================
 
-setInterval(() => {
+function deletePerson(name) {
+
+  if (!confirm("Delete " + name + "?")) return;
+
+  state.mechanics = state.mechanics.filter(m => m !== name);
+  state.helpers = state.helpers.filter(h => h !== name);
+  state.history = state.history.filter(h => h.name !== name);
+
+  save();
+  updateUI();
   updateCounts();
-}, 1000);
+
+  renderRoster("mechanic");
+  renderRoster("helper");
+}
 
 // =========================
-// INITIAL SYNC FIX (IMPORTANT)
+// BOOT SAFETY
 // =========================
 
-updateUI();
-updateCounts();
-
-console.log("OT Dispatch v3 loaded successfully");
+console.log("OT Dispatch v3 loaded");
